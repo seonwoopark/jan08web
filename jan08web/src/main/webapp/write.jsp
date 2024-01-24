@@ -1,12 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.poseidon.dto.BoardDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.poseidon.dao.BoardDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>   
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-
+<title>글쓰기</title>
+<link href="./css/index.css" rel="stylesheet"/>
+<link href="./css/menu.css" rel="stylesheet"/>
+<script type="text/javascript" src="./js/menu.js"></script>
 <!-- include libraries(jQuery, bootstrap) -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -15,52 +19,43 @@
 <!-- include summernote css/js -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
-
-<link rel="stylesheet" type="text/css" href="./css/index.css"/>
-<link rel="stylesheet" type="text/css" href="./css/menu.css"/>
-<script type="text/javascript" src="./js/menu.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#summernote').summernote({
-            height: 500
-        });
-    });
-</script>
-
 <style type="text/css">
-	#title{
-		width:100%;
-		height:30px;
-		margin-bottom:10px;
-	}
+#title{
+	width: 100%;
+	height: 30px;
+	margin-bottom: 10px;	
+}
 </style>
-
 </head>
 <body>
 	<div class="container1">
 		<header>
-			<jsp:include page="menu.jsp"/>
+			<%@ include file="menu.jsp"%>
 		</header>
-	 	<div class="main">
+		<div class="main">
 			<div class="mainStyle">
 				<article>
 					<h1>글쓰기</h1>
-					<div>
+					<div class="writeFORM">
 						<form action="./write" method="post">
-							<input id="title" type="text" name="title">
-							<textarea name="content" id="summernote"></textarea>
-							<input type="hidden" name="mno" value="${sessionScope.mno }">
+							<input type="text" id="title" name="title">
+							<textarea id="summernote" name="content"></textarea>
 							<button type="submit">저장하기</button>
 						</form>
 					</div>
 				</article>
 			</div>
-	 	</div>
-	 	
+		</div>
 		<footer>
-			<c:import url="footer.jsp"/>
+		<c:import url="footer.jsp"/>
 		</footer>
- 	</div>
+	</div>
+	<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+        	height: 500
+        });
+    });
+  </script>
 </body>
 </html>
