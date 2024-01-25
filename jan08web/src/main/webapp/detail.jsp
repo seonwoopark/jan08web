@@ -45,7 +45,16 @@ $(document).ready(function(){
 			dataType:'text',
 			data:{'cno':cno,'recomment':recomment},
 			success: function(result){
-				alert("통신 성공" + result);
+				if(result==1){
+					//수정된 데이터를 화면에 보여주면 됌
+					$(".recommentBox").remove();
+
+					$('./comment').text(recomment);
+				} else{
+					//실패
+					location.href="./detail?page=${param.page}&no=${detail.no}";
+					
+				}
 			},
 			error: function(error){
 				alert("문제가 발생했습니다." + error);
@@ -64,6 +73,7 @@ $(document).ready(function(){
 			
 			$(this).prev().hide();
 			$(this).hide();
+			
 			
 			comment.css('height','110');
 			comment.css('padding-top','10px');
