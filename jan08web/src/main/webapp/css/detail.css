@@ -71,7 +71,7 @@
 	resize: none;
 	box-sizing: border-box;
 }
-.comment-form button{
+.comment-form button, #recommend-btn{
 	margin: 0;
 	padding:0;
 	width: 100px;
@@ -90,6 +90,7 @@
 .comment{
 	width: 100%;
 	min-height: 100px;
+	height: auto;
 	padding: 5px;
 	box-sizing: border-box;
 }
@@ -116,8 +117,25 @@
     padding: 0px 10px;
 }
 
+.commentcontent{
+	margin: 0;
+	width: calc(100% - 100px);
+	height: 100px;
+	padding:5px;
+	border: 0px;
+	float: left;
+	resize: none;
+	box-sizing: border-box;
+}
 
-
+.comment-btn{
+	margin: 0;
+	padding:0;
+	width: 100px;
+	height: 100px;
+	float: left;
+	border: 0px;
+}
 
 
 

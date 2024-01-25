@@ -19,14 +19,69 @@
 function del(){var ch = confirm("글을 삭제하시겠습니까?");if(ch){location.href="./delete?no=${detail.no }";}}
 function update(){if(confirm("수정하시겠습니까?")){location.href="./update?no=${detail.no }";}}
 //function commentDel(cno){if(confirm("댓글을 삭제하시겠습니까?")){location.href='./commentDel?no=${detail.no}&cno='+cno;}}
+
+
+
 $(document).ready(function(){
+	
+	
+	$("#commentcontent").keyup(function(){
+		let text = $(this).val();
+		
+		if(text.length > 150) {
+			alert("150글자 넘었어요.");
+			$(this).val(text.substr(0,150));
+		}
+			$(this).next().text("글쓰기" +text.length + "/ 150");
+	});
+	
+	$(document).on('click','.comment-btn',function(){
+		let cno = $(this).prev().val();
+		let recomment = $('.commentcontent').val();
+		
+		$.ajax({
+			url:'./recomment',
+			type:'post',
+			dataType:'text',
+			data:{'cno':cno,'recomment':recomment},
+			success: function(result){
+				alert("통신 성공" + result);
+			},
+			error: function(error){
+				alert("문제가 발생했습니다." + error);
+			}
+		})
+		
+	});
+	
 	
 	$(".commentEdit").click(function(){
 		if(confirm('수정하시겠습니까?')){
 			//필요한 값 cno잡기 / 수정한 내용 + 로그인 ==== 서블릿에서 정리
 			let cno = $(this).siblings(".cno").val();
-			let comment = $(this).parents(".chead").next().text();
-			alert(cno + " : " + comment);
+			let comment = $(this).parents(".chead").next();
+			//alert(cno + " : " + comment);
+			
+			$(this).prev().hide();
+			$(this).hide();
+			
+			comment.css('height','110');
+			comment.css('padding-top','10px');
+			comment.css('background-color','#c1c1c1');
+			
+			let commentChange = comment.html().replaceAll("<br>","\n\r");
+			
+			let recommentBox = '<div class="recommentBox">';
+			//recommentBox += '<form action ="./cedit" method="post">';
+			recommentBox += '<textarea class="commentcontent" name="comment">'+ commentChange +'</textarea>';
+			recommentBox += '<input type="hidden" name="cno" value="'+ cno +'">';
+			recommentBox += '<button class="comment-btn" type="submit">댓글 수정</button>';
+			//recommentBox += '</form></div>';
+			recommentBox += '</div>';
+			
+			
+			
+			comment.html(recommentBox);
 		}
 	});
 	

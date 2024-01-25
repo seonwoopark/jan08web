@@ -48,5 +48,27 @@ public class CommentDAO extends AbstractDAO {
 		}		
 		return result;
 	}
+	
+	public int commentUpdate(CommentDTO dto) {
+		Connection conn = db.getConnection();
+		int result = 0;
+		PreparedStatement pstmt =null;
+		String sql ="UPDATE comment SET ccomment = ? "
+				+ "WHERE mno = (SELECT mno FROM member WHERE mid=?) "
+				+ "AND cno =?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getComment());
+			pstmt.setString(2, dto.getMid());
+			pstmt.setInt(3, dto.getCno());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 }
