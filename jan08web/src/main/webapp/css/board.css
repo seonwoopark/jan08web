@@ -71,3 +71,9 @@ span{
 	height: 10px;
 	border-radius: 15px;
 }
+
+.boardTable thead tr{
+	background-color: yellow;
+}
+
+

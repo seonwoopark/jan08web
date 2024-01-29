@@ -49,7 +49,8 @@
 		<header>
 			<%@ include file="menu.jsp"%>
 		</header>
-		<div class="main">
+		<body>
+			<div class="main">
 			<div class="mainStyle">
 				<article>
 					<h1>login</h1>
@@ -72,6 +73,7 @@
 				</article>
 			</div>
 		</div>
+		</body>
 		<footer>
 		<c:import url="footer.jsp"/>
 		</footer>

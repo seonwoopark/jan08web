@@ -38,6 +38,21 @@ $(document).ready(function(){
 	$(document).on('click','.comment-btn',function(){
 		let cno = $(this).prev().val();
 		let recomment = $('.commentcontent').val();
+		let comment = $(this).parents('.ccomment');
+		
+		/* <div class="comment">
+		<div class="chead">
+			<div class="cname">${co.mname }님<c:if test="${sessionScope.mname ne null && co.mid eq sessionScope.mid }">
+					<input type="hidden" class="cno" value="${co.cno }">
+					<img alt="삭제" src="./img/delete.png" class="commentDelete">
+					<img alt="수정" src="./img/edit.png" class="commentEdit">
+				</c:if>
+			</div>
+			<div class="cdate">${co.ip}/ ${co.cdate }</div>
+		</div>
+		<div class="ccomment">${co.comment }</div>
+	</div> */
+		
 		
 		$.ajax({
 			url:'./recomment',
@@ -48,8 +63,13 @@ $(document).ready(function(){
 				if(result==1){
 					//수정된 데이터를 화면에 보여주면 됌
 					$(".recommentBox").remove();
-
-					$('./comment').text(recomment);
+					comment.css('backgroundColor','#ffffff');
+					comment.css('min-height','100px');
+					comment.css('height','auto');
+					comment.html(recomment.replace(/(?:\r\n|\r|\n)/g,'<br>'));
+					
+					$('.commentDelete').show();
+					$('.commentEdit').show();
 				} else{
 					//실패
 					location.href="./detail?page=${param.page}&no=${detail.no}";
@@ -77,9 +97,9 @@ $(document).ready(function(){
 			
 			comment.css('height','110');
 			comment.css('padding-top','10px');
-			comment.css('background-color','#c1c1c1');
+			comment.css('backgroundColor','#c1c1c1');
 			
-			let commentChange = comment.html().replaceAll("<br>","\n\r");
+			let commentChange = comment.html().replaceAll("<br>","\n");
 			
 			let recommentBox = '<div class="recommentBox">';
 			//recommentBox += '<form action ="./cedit" method="post">';

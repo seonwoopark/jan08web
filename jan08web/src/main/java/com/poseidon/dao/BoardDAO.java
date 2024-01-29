@@ -12,7 +12,49 @@ import com.poseidon.dto.CommentDTO;
 import com.poseidon.util.Util;
 
 public class BoardDAO extends AbstractDAO {
+	
+	public void updateDel(int del) {
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt= null;
+		String sql ="UPDATE board SET board_del=? WHERE board_no =?";
+	}
 
+	public List<BoardDTO> boardAdminList(int page) {
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		Connection con = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT board_no,board_title,mname,board_date,board_del,board_ip,"
+				+ "(SELECT COUNT(*) FROM visitcount c WHERE a.board_no = c.board_no) AS board_count, "
+				+ "(SELECT COUNT(*) FROM comment d WHERE a.board_no = d.board_no) AS comment"
+				+ " FROM board a LEFT OUTER JOIN member b ON a.mno = b.mno ORDER BY board_no DESC LIMIT ?, 10";
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, (page - 1) * 10);// 수정해야합니다.
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				BoardDTO e = new BoardDTO();
+				e.setNo(rs.getInt("board_no"));
+				e.setTitle(rs.getString("board_title"));
+				e.setWrite(rs.getString("mname"));
+				e.setDate(rs.getString("board_date"));
+				e.setCount(rs.getInt("board_count"));
+				e.setIp(rs.getString("board_ip"));
+				e.setDel(rs.getInt("board_del"));
+				e.setComment(rs.getInt("comment"));
+				list.add(e);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs, pstmt, con);
+		}
+		return list;
+	}
+	
 	public List<BoardDTO> boardList(int page) {
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		Connection con = db.getConnection();

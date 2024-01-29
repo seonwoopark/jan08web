@@ -3,8 +3,16 @@ package com.poseidon.dto;
 import com.poseidon.util.Util;
 
 public class BoardDTO {
-	private int no, count, comment;
+	private int no, count, comment,del;
 	private String title, content, write, date, mid, ip;
+
+	public int getDel() {
+		return del;
+	}
+
+	public void setDel(int del) {
+		this.del = del;
+	}
 
 	public int getNo() {
 		return no;

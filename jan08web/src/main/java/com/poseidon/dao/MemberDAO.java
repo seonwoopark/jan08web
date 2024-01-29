@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.poseidon.dto.BoardDTO;
 import com.poseidon.dto.MemberDTO;
 
 //로그인, 회원가입, 회원 탈퇴처리, 회원 정보보기
@@ -18,7 +19,7 @@ public class MemberDAO extends AbstractDAO {
 		Connection con = db.getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT count(*) as count, mname FROM member WHERE mid=? AND mpw=?";
+		String sql = "SELECT count(*) as count, mname FROM member WHERE mid=? AND mpw=? AND mgrade >= 5";
 
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -141,6 +142,95 @@ public class MemberDAO extends AbstractDAO {
 			close(rs, pstmt, conn);
 		}		
 		return data;
+	}
+	
+	public List<MemberDTO> selectMember(){
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM member";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberDTO dto = new MemberDTO();
+				dto.setMno(rs.getInt(1));
+				dto.setMid(rs.getString(2));
+				dto.setMpw(rs.getString(3));
+				dto.setMname(rs.getString(4));
+				dto.setMdate(rs.getString(5));
+				dto.setMgrade(rs.getInt(6));
+				
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(rs, pstmt, conn);
+		}
+		
+		
+		return list;
+	}
+	
+	
+	public List<MemberDTO> selectMember(int grade){
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM member WHERE mgrade = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, grade);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberDTO dto = new MemberDTO();
+				dto.setMno(rs.getInt(1));
+				dto.setMid(rs.getString(2));
+				dto.setMpw(rs.getString(3));
+				dto.setMname(rs.getString(4));
+				dto.setMdate(rs.getString(5));
+				dto.setMgrade(rs.getInt(6));
+				
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(rs, pstmt, conn);
+		}
+		
+		
+		return list;
+	}
+	
+	public int updateGrade(MemberDTO dto) {
+		int result = 0;
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE member SET mgrade = ? WHERE mno =?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getMgrade());
+			pstmt.setInt(2, dto.getMno());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+		
 	}
 
 }

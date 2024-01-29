@@ -32,7 +32,7 @@ public class CommentDAO extends AbstractDAO {
 	public int commentDelete(CommentDTO dto) {
 		Connection con = db.getConnection();
 		PreparedStatement pstmt = null;
-		String sql = "UPDATE comment SET cdel=0 "
+		String sql = "UPDATE comment SET cdel='0' "
 				+ "WHERE cno=? AND mno=(SELECT mno FROM member WHERE mid=?)";
 		int result = 0;
 		

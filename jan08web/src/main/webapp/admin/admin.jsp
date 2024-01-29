@@ -1,0 +1,30 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
+<link rel="stylesheet" href="../css/admin.css?ver=0.18"/>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+<script type="text/javascript" src="../js/menu.js"></script>
+</head>
+<body>
+	<!-- 2024-01-26 관리자 페이지 만들기 -->
+	<!-- 틀 -->
+	<div class="wrap">
+		<!-- menu -->
+		<%@ include file="menus.jsp" %>
+		<!-- 본문내용 -->
+		<div class="main">
+			<!-- 이 페이지에 오는 모든 사람은 관리자인지 검사를 합니다.
+			관리자 경우 보여주고, 로그인 하지 않았거나 일반 사용자는 로그인 페이지로 이동 시킵니다 -->
+			<article>
+				<div class="info">
+					안녕하세요.
+				</div>
+			</article>
+		</div>
+	</div>
+
+</body>
+</html>

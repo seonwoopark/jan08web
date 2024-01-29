@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+/* CSS 변수 만들기 2024-01-29
+--변수명 : 값;
+전역변수로 만들기 : root{}
+ */
+:root{
+	--main:45px;
+}
+
+
+
+
+body{
+	background-color: grey;
+	margin:0;
+	padding:0;
+}
+
+
+.wrap{
+	width:100%;
+	height:100vh;
+	
+	/* 자식 요소들 정렬 */
+	display:flex;
+}
+
+.menu{
+	/* 변수 사용 var(변수명) */
+	width:var(--main);
+	height:100vh;
+	background-color: navy;
+	overflow: hidden;
+	position:absolute;
+}
+
+.menu:hover {
+	width:150px;
+	transition: 0.5s;
+}
+
+nav{
+	margin-top:50px;
+}
+
+.menu li {
+	margin:0;
+	padding:0;
+	padding:20px;
+	color : white;
+	width: 150px;
+	padding-left: 13px;
+}
+
+.menu i {
+	margin-right:10px;
+}
+
+.menu ul {
+	list-style-type: none;
+	margin:0;
+	padding:0;
+}
+
+.menu li:hover{
+	background-color: orange;
+}
+
+.main{
+	width: calc(100% - var(--main));
+	height:100vh;
+	background-color: teal;
+	display: flex;
+	justify-content: center;
+ 	align-items: center;
+ 	margin-left: var(--main);
+}
+
+.info{
+	background-color: red;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.board{
+	text-align:center;
+	width:100%;
+}
+
+.paging{
+	margin: 0 auto;
+	width: 500px;
+	height: 30px;
+	/* background-color: gray; */
+	margin-top: 10px;
+	line-height: 30px;
+	text-align: center;
+}
+
+.boardTable{
+	border-collapse: collapse;
+}
+
+.title > a {
+	text-decoration: none;
+}
+
+.title a:visited{
+	color: gray;
+}
+.title a:link{
+	color: black;
+}
+.title a:hover{
+	color: red;
+}

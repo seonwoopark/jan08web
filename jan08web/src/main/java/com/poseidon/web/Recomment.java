@@ -47,11 +47,14 @@ public class Recomment extends HttpServlet {
 			
 			CommentDAO dao = new CommentDAO();
 			result = dao.commentUpdate(dto);
+			
+			System.out.println(result);
+		
 		}
 		
-		PrintWriter pw = new PrintWriter(System.out);
+		PrintWriter pw = response.getWriter();
 		
-		pw.write(result);
+		pw.print(result);
 
 		
 	}

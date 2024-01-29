@@ -59,6 +59,7 @@ public class CommentDel extends HttpServlet {
 
 			CommentDAO dao = new CommentDAO();
 			result = dao.commentDelete(dto);
+			
 		}
 
 		// response.setContentType("application/json");

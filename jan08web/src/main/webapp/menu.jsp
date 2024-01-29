@@ -11,5 +11,7 @@
 					<li onclick="url('./login')">로그인</li></c:when><c:otherwise>
 					<li onclick="url('./myInfo')">${sessionScope.mname }님</li>
 					<li onclick="url('./logout')">로그아웃</li></c:otherwise></c:choose>
+					
+					<li onclick="url('./coffee')">커피</li>
 				</ul>
 			</nav>
