@@ -21,26 +21,40 @@
 <script type="text/javascript">
 	$(function(){
 		
-		$(".del").on('change',function(){
-			let del = $('#del').val();
-			let board_no = $(this).parents("tr").children().first().text();
-			
-			alert(board_no);
-			
-			
-			$.ajax({
-				url:"./adminboard",
-				tyle:"post",
-				dataType:"text",
-				data:{"del":del,"board_no":board_no},
-				success: function(){
-					alert("성공");
-				},
-				error: function(){
-					alert("실패");
-				}
-			});
+		$("#searchBtn").click(function(){
+			let search = $('#search').val();
+			location.href="./adminboard?search="+search;
 		});
+
+		$('.changeDel').click(function(){
+			let del = $(this).prev().val();
+			let no = $(this).parents('tr').children().first().text();
+			
+			let tr = $(this).parents('tr');
+			let i =$(this);
+			let del2 = $(this).prev();
+			$.ajax({
+				url:'./adminboard',
+				type:'post',
+				dataType:'text',
+				data:{'del':del,'board_no':no},
+				success:function(result){
+
+					if(del == 1){
+						tr.attr('class',"row0");
+						i.attr('class','xi-eye-off-o');
+						del2.attr('value','0');
+					} else {
+						tr.attr('class',"row1");
+						i.attr('class','xi-eye');
+						del2.attr('value','1')
+					}
+				},
+				error:function(error){
+					alert("에러 : "+ error)
+				}
+			}) 
+		})
 	});
 </script>
 </head>
@@ -56,6 +70,9 @@
 				<h1>게시물 관리</h1>
 					<c:choose><c:when test="${fn:length(list) gt 0 }">
 					<div class="board">
+						<div class="search">						
+							<input type="text" id ="search"><button id="searchBtn">검색</button>
+						</div>
 							<table class="boardTable">
 								<thead>
 									<tr>
@@ -77,10 +94,10 @@
 										<td>${row.comment }</td>
 										<td class="w1">${row.count }</td>
 										<td>
-										<select class="del">
-											<option <c:if test="${row.del eq 0 }">selected="selected"</c:if> value="0">0</option>
-											<option <c:if test="${row.del eq 1 }">selected="selected"</c:if>  value="1">1</option>	
-										</select>${row.del }</td>
+											<input type="hidden" id="del" value="${row.del }">
+											<c:if test="${row.del eq 0 }"><i class="xi-eye-off-o changeDel"></i></c:if>
+											<c:if test="${row.del ne 0 }"><i class="xi-eye changeDel"></i></c:if>
+										</td>
 									</tr></c:forEach></tbody>
 							</table>
 						</div>	
@@ -106,9 +123,11 @@
 							<div class="paging">
 								<button onclick="paging(1)">⏮️</button>
 								<button <c:if test="${page - 10 lt 1 }">disabled="disabled"</c:if> onclick="paging(${page - 10 })">◀️</button>
+								
 								<c:forEach begin="${startPage }" end="${endPage }" var="p">
 									<button <c:if test="${page eq p }">class="currentBtn"</c:if> onclick="paging(${p })">${p }</button>
 								</c:forEach>
+								
 								<button <c:if test="${page + 10 gt totalPage }">disabled="disabled"</c:if> onclick="paging(${page + 10 })">▶️</button>
 								<button onclick="paging(${totalPage })">⏭️</button>
 								

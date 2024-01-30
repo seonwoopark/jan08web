@@ -1,6 +1,7 @@
 package com.poseidon.admin;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -27,15 +28,22 @@ public class AdminBoard extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		BoardDAO dao = new BoardDAO();
 		
 		int page = 1;
-		
-		if(request.getParameter("page") !=null && request.getParameter("page") != "") {
+		List<BoardDTO> list = null;
+		if(request.getParameter("page") !=null && !request.getParameter("page").equals("")) {
 			page = Util.str2Int2(request.getParameter("page"));
 		}
+
+		if(request.getParameter("search") ==null) {
+			list = dao.boardAdminList(page);
+		} else {
+			list = dao.boardAdminList(request.getParameter("search"));			
+		}
 		
-		List<BoardDTO> list = dao.boardAdminList(page);
 		int totalCount = dao.totalCount();
 		
 		
@@ -49,8 +57,21 @@ public class AdminBoard extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		BoardDAO dao = new BoardDAO();
+		String del = request.getParameter("del");
+		String board_no = request.getParameter("board_no");
 		
+//		System.out.println(del +" : "+ board_no);
+		BoardDTO dto = new BoardDTO();
+		
+		
+		dto.setDel(Util.str2Int(del) ==1 ? 0 : 1);
+		dto.setNo(Util.str2Int(board_no));
+		
+		BoardDAO dao = new BoardDAO();
+		int result = dao.updateDel(dto);
+		
+		PrintWriter pw = response.getWriter();
+		pw.print(result);
 		
 	}
 

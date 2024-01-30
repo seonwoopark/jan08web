@@ -2,7 +2,15 @@ package com.poseidon.dto;
 
 public class CommentDTO {
 	private int cno, board_no, clike, mno;
-	private String comment, mid, mname, cdate, ip;
+	private String comment, mid, mname, cdate, ip,cdel;
+
+	public String getCdel() {
+		return cdel;
+	}
+
+	public void setCdel(String cdel) {
+		this.cdel = cdel;
+	}
 
 	public int getCno() {
 		return cno;

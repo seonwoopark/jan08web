@@ -13,12 +13,65 @@ import com.poseidon.util.Util;
 
 public class BoardDAO extends AbstractDAO {
 	
-	public void updateDel(int del) {
+	public int updateDel(BoardDTO dto) {
 		Connection conn = db.getConnection();
 		PreparedStatement pstmt= null;
 		String sql ="UPDATE board SET board_del=? WHERE board_no =?";
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, Integer.toString(dto.getDel()));
+			pstmt.setInt(2, dto.getNo());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
+	public List<BoardDTO> boardAdminList(String search) {
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		Connection con = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT board_no,board_title,mname,board_date,board_del,board_ip,"
+				+ "(SELECT COUNT(*) FROM visitcount c WHERE a.board_no = c.board_no) AS board_count, "
+				+ "(SELECT COUNT(*) FROM comment d WHERE a.board_no = d.board_no) AS comment"
+				+ " FROM board a LEFT OUTER JOIN member b ON a.mno = b.mno "
+				+ "WHERE board_title LIKE CONCAT('%',?,'%') OR board_title LIKE CONCAT('%',?,'%') "
+				+ " OR board_content LIKE CONCAT('%',?,'%') OR mname LIKE CONCAT('%',?,'%') ORDER BY board_no DESC "
+				+ " LIMIT 0, 10";
 
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, search);
+			pstmt.setString(2, search);
+			pstmt.setString(3, search);
+			pstmt.setString(4, search);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				BoardDTO e = new BoardDTO();
+				e.setNo(rs.getInt("board_no"));
+				e.setTitle(rs.getString("board_title"));
+				e.setWrite(rs.getString("mname"));
+				e.setDate(rs.getString("board_date"));
+				e.setCount(rs.getInt("board_count"));
+				e.setIp(rs.getString("board_ip"));
+				e.setDel(rs.getInt("board_del"));
+				e.setComment(rs.getInt("comment"));
+				list.add(e);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	
 	public List<BoardDTO> boardAdminList(int page) {
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		Connection con = db.getConnection();
